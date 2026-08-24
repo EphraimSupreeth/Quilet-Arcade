@@ -1,0 +1,498 @@
+.dg-library-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    var(--panel),
+    color-mix(in srgb, var(--accent-2) 8%, var(--panel))
+  );
+  box-shadow: var(--shadow-sm);
+}
+
+.dg-library-panel h3,
+.dg-library-panel p {
+  margin: 0;
+}
+
+.dg-library-panel p {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.dg-library-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.dg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 16000;
+  display: grid;
+  padding: 14px;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.dg-overlay.hidden {
+  display: none !important;
+}
+
+.dg-shell {
+  display: flex;
+  width: min(1180px, 100%);
+  height: min(850px, calc(100dvh - 28px));
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: 0 32px 90px rgba(15, 23, 42, 0.45);
+}
+
+.dg-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--accent-soft);
+}
+
+.dg-head h2,
+.dg-head p {
+  margin: 0;
+}
+
+.dg-head p {
+  color: var(--muted);
+}
+
+.dg-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.dg-code {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--accent) 35%,
+    var(--border)
+  );
+  border-radius: 11px;
+  background: var(--panel);
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.dg-code-value {
+  letter-spacing: 0.14em;
+}
+
+.dg-copy-label {
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: normal;
+}
+
+.dg-close {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--text);
+}
+
+.dg-setup {
+  display: grid;
+  width: min(560px, 100%);
+  margin: auto;
+  padding: 28px;
+  gap: 18px;
+}
+
+.dg-setup h3,
+.dg-setup p {
+  margin: 0;
+  text-align: center;
+}
+
+.dg-setup-icon {
+  text-align: center;
+  font-size: 3.3rem;
+}
+
+.dg-game {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  min-height: 0;
+}
+
+.dg-board-column {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  padding: 14px;
+}
+
+.dg-round-bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dg-round-word {
+  overflow: hidden;
+  color: var(--accent);
+  font-family: "Baloo 2", sans-serif;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dg-time {
+  min-width: 50px;
+  color: var(--error);
+  font-weight: 900;
+  text-align: right;
+}
+
+.dg-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  background: #fff;
+  touch-action: none;
+}
+
+#drawGuessCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  touch-action: none;
+}
+
+#drawGuessCanvas.dg-can-draw {
+  cursor: crosshair;
+}
+
+.dg-waiting {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.94);
+  color: #475569;
+  text-align: center;
+}
+
+.dg-waiting[hidden] {
+  display: none;
+}
+
+.dg-word-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: min(520px, 100%);
+  margin: 18px auto 0;
+}
+
+.dg-word-choice {
+  min-height: 58px;
+  padding: 10px;
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--accent);
+  font: inherit;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.dg-word-choice:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.dg-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.dg-tools[hidden] {
+  display: none !important;
+}
+
+.dg-color {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 3px solid var(--panel);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.dg-color.active {
+  box-shadow: 0 0 0 3px var(--accent);
+}
+
+.dg-size {
+  width: 105px;
+  min-height: 36px;
+  padding: 0;
+}
+
+.dg-sidebar {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background: var(--panel-soft);
+}
+
+.dg-participants-section {
+  display: flex;
+  min-height: 145px;
+  max-height: 265px;
+  flex: 0 0 auto;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+}
+
+.dg-participants-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 13px 9px;
+}
+
+.dg-participants-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dg-participant-count {
+  display: inline-flex;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.dg-players {
+  flex: 1;
+  min-height: 0;
+  padding: 0 13px 13px;
+  overflow-y: auto;
+}
+
+.dg-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 10px;
+  border-radius: 11px;
+}
+
+.dg-player:nth-child(odd) {
+  background: var(--panel);
+}
+
+.dg-player.active-artist {
+  outline: 2px solid var(--accent);
+}
+
+.dg-player strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dg-player span {
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.dg-player-you {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.dg-chat {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.dg-chat-title {
+  margin: 0;
+  padding: 11px 13px 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dg-messages {
+  flex: 1;
+  min-height: 130px;
+  padding: 13px;
+  overflow-y: auto;
+}
+
+.dg-message {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--panel);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.dg-message.correct {
+  background: color-mix(
+    in srgb,
+    var(--success) 14%,
+    var(--panel)
+  );
+  color: var(--success);
+  font-weight: 900;
+}
+
+.dg-guess-form {
+  display: flex;
+  gap: 7px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.dg-guess-form input {
+  min-width: 0;
+}
+
+.dg-guess-form button {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 760px) {
+  .dg-library-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .dg-library-actions {
+    justify-content: stretch;
+  }
+
+  .dg-library-actions > * {
+    flex: 1;
+  }
+
+  .dg-game {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .dg-board-column {
+    min-height: 500px;
+  }
+
+  .dg-sidebar {
+    min-height: 390px;
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+
+  .dg-shell {
+    height: calc(100dvh - 16px);
+    border-radius: 20px;
+  }
+
+  .dg-overlay {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  .dg-word-choices {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .dg-copy-label {
+    display: none;
+  }
+
+  .dg-board-column {
+    min-height: 430px;
+    padding: 9px;
+  }
+
+  .dg-round-bar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .dg-round-word {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
