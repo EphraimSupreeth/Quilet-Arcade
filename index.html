@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <meta
+    name="description"
+    content="Quilet Arcade is a modern platform for creating, hosting, and playing quizzes."
+  />
+  <meta name="theme-color" content="#2563eb" />
+
+  <title>Quilet Arcade - Smart Quiz Platform</title>
+
+  <script>
+    try {
+      const user = JSON.parse(localStorage.getItem("quiletUser") || "null");
+      if (user && user.id && user.email) {
+        document.documentElement.classList.add("restoring-session");
+      }
+    } catch {
+      localStorage.removeItem("quiletUser");
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="icon"
+    href="https://uploads.onecompiler.io/44t258rvg/44x5y9pza/Page%20logo.png"
+  />
+
+  <link rel="stylesheet" href="styles.css?v=2026.08.14.1" />
+  <link rel="stylesheet" href="modern-layout.css?v=2026.08.14.1" />
+  <link rel="stylesheet" href="theme-fix.css?v=2026.08.14.1" />
+  <link rel="stylesheet" href="theme-backgrounds.css?v=2026.08.14.1" />
+  <link rel="stylesheet" href="index-overrides.css?v=2026.08.14.1" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="topbar" id="mainTopbar">
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src="https://uploads.onecompiler.io/44t258rvg/44x5y9pza/Page%20logo.png"
+          alt="Quilet Arcade logo"
+        />
+        <div>
+          <strong>Quilet Arcade</strong>
+          <small>Engage • Learn • Grow</small>
+        </div>
+      </div>
+
+      <button
+        id="hamburgerBtn"
+        type="button"
+        class="hamburger-btn"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="topbarActions"
+      >
+        <span></span>
+      </button>
+
+      <div id="topbarActions" class="topbar-actions">
+        <nav class="nav-group" aria-label="Main navigation">
+          <button type="button" class="nav-btn active" data-view="home">
+            Home
+          </button>
+          <button type="button" class="nav-btn" data-view="create">
+            Create
+          </button>
+          <button type="button" class="nav-btn" data-view="library">
+            Library
+          </button>
+          <button type="button" class="nav-btn" data-view="analytics">
+            Analytics
+          </button>
+          <button type="button" class="nav-btn" data-view="settings">
+            Settings
+          </button>
+        </nav>
+
+        <div class="user-actions">
+          <button
+            id="notificationBtn"
+            type="button"
+            class="icon-btn"
+            title="Open notifications"
+            aria-label="Notifications"
+          >
+            <span class="toolbar-bell-icon" aria-hidden="true">🔔</span>
+          </button>
+
+          <div id="userBadge" class="user-badge"></div>
+
+          <button id="logoutBtn" type="button" class="secondary-btn">
+            Sign out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="authView" class="view active">
+        <div class="auth-container">
+          <div class="auth-logo">
+            <img
+              src="https://uploads.onecompiler.io/44t258rvg/44x5y9pza/Website%20logo.png"
+              alt="Quilet Arcade"
+            />
+          </div>
+
+          <div class="auth-card panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Professional quiz platform</p>
+                <h2 id="authTitle">Sign in to Quilet Arcade</h2>
+              </div>
+
+              <button id="toggleAuthBtn" type="button" class="text-btn">
+                Create account
+              </button>
+            </div>
+
+            <p class="auth-helper">
+              Create quizzes, host live sessions, and track results.
+            </p>
+
+            <form id="signinForm" class="stacked-form auth-form">
+              <label for="signinEmail">Email address</label>
+              <input
+                id="signinEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="you@school.edu"
+                required
+              />
+
+              <label for="signinPassword">Password</label>
+              <input
+                id="signinPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+              />
+
+              <button type="submit" class="primary-btn">Sign in</button>
+            </form>
+
+            <form id="signupForm" class="stacked-form auth-form hidden">
+              <label for="signupName">Display name</label>
+              <input
+                id="signupName"
+                type="text"
+                autocomplete="name"
+                placeholder="Your name"
+              />
+
+              <label for="signupEmail">Email address</label>
+              <input
+                id="signupEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="you@school.edu"
+                required
+              />
+
+              <label for="signupPassword">Create password</label>
+              <input
+                id="signupPassword"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                placeholder="At least 8 characters"
+                required
+              />
+
+              <label class="checkbox-field">
+                <input id="signupKidsMode" type="checkbox" />
+                <span>Kid-friendly mode</span>
+              </label>
+
+              <button type="submit" class="primary-btn">
+                Create account
+              </button>
+            </form>
+
+            <p id="authMessage" class="auth-message">
+              Secure account
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="homeView" class="view">
+        <div class="hero-card">
+          <div>
+            <p class="eyebrow">Professional • Playful • Interactive</p>
+            <h1>Welcome back, <span id="heroName">Learner</span> 👋</h1>
+
+            <p class="hero-copy">
+              Design quizzes, host live sessions, and measure progress.
+            </p>
+
+            <div class="hero-buttons">
+              <button
+                id="heroJoinQuizBtn"
+                type="button"
+                class="primary-btn"
+                data-view="library"
+              >
+                Join Quiz
+              </button>
+
+              <button type="button" class="secondary-btn" data-view="library">
+                Browse library
+              </button>
+            </div>
+
+            <div class="hero-tags">
+              <span class="hero-tag">Live hosting</span>
+              <span class="hero-tag">Real-time results</span>
+              <span class="hero-tag">Kid-safe options</span>
+            </div>
+          </div>
+
+          <div class="hero-art">
+            <div class="hero-animation hero-logo-bubble">
+              <img
+                src="https://uploads.onecompiler.io/44t258rvg/44x5y9pza/Page%20logo.png"
+                alt="Quilet Arcade logo"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <strong id="quizCount">0</strong>
+            <span>Quizzes created</span>
+          </article>
+
+          <article class="stat-card">
+            <strong id="gameCount">0</strong>
+            <span>Games hosted</span>
+          </article>
+
+          <article class="stat-card">
+            <strong id="avgScore">0%</strong>
+            <span>Average score</span>
+          </article>
+
+          <article class="stat-card">
+            <strong id="totalTime">0m</strong>
+            <span>Learning time</span>
+          </article>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Featured quizzes</h2>
+            <button type="button" class="text-btn" data-view="library">
+              See all
+            </button>
+          </div>
+          <div id="homePreview" class="card-grid"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Recent results</h2>
+            <button id="clearHistoryBtn" type="button" class="tiny-btn">
+              Clear
+            </button>
+          </div>
+          <div id="historyPreview" class="card-grid"></div>
+        </div>
+
+        <div class="panel achievement-panel">
+          <div class="panel-head">
+            <h2>Achievements</h2>
+          </div>
+          <div id="achievementsList" class="achievement-grid"></div>
+        </div>
+      </section>
+
+      <section id="createView" class="view">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Create a new quiz</h2>
+              <p>Build questions and answer choices.</p>
+            </div>
+          </div>
+
+          <form id="quizForm" class="stacked-form">
+            <div class="field-row">
+              <label for="quizTitle">
+                Quiz title
+                <input
+                  id="quizTitle"
+                  name="title"
+                  placeholder="Rainy Day Science"
+                  required
+                />
+              </label>
+
+              <label for="quizSubject">
+                Subject
+                <select id="quizSubject" name="subject" required>
+                  <option value="">Select a subject</option>
+                  <option>Science</option>
+                  <option>Math</option>
+                  <option>History</option>
+                  <option>Language</option>
+                  <option>Geography</option>
+                  <option>Business</option>
+                  <option>Technology</option>
+                  <option>Art</option>
+                  <option>Sports</option>
+                  <option>Other</option>
+                </select>
+              </label>
+            </div>
+
+            <label for="quizDescription">
+              Welcome message
+              <textarea
+                id="quizDescription"
+                name="description"
+                rows="3"
+                placeholder="A short introduction"
+              ></textarea>
+            </label>
+
+            <div class="field-row">
+              <label for="quizDifficulty">
+                Difficulty
+                <select id="quizDifficulty" name="difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </label>
+
+              <label for="quizCategory">
+                Category
+                <input
+                  id="quizCategory"
+                  name="category"
+                  placeholder="e.g. Beginner"
+                />
+              </label>
+            </div>
+
+            <div id="questionFields" class="question-list"></div>
+
+            <div class="form-actions">
+              <button
+                type="button"
+                id="addQuestionBtn"
+                class="secondary-btn"
+              >
+                + Add question
+              </button>
+
+              <button type="submit" class="primary-btn">
+                Save quiz
+              </button>
+
+              <button
+                type="button"
+                id="cancelEditBtn"
+                class="text-btn hidden"
+              >
+                Cancel edit
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="libraryView" class="view">
+        <div class="panel">
+          <div class="panel-head library-panel-head">
+            <div>
+              <h2>Quiz library</h2>
+              <p>Manage, search, and launch your quizzes.</p>
+            </div>
+
+            <div class="library-actions">
+              <button
+                id="exportToolbarBtn"
+                type="button"
+                class="secondary-btn"
+              >
+                Export worksheet
+              </button>
+
+              <button type="button" class="primary-btn" data-view="create">
+                + New quiz
+              </button>
+            </div>
+          </div>
+
+          <div id="joinQuizPanel" class="join-panel">
+            <div class="panel-head">
+              <div>
+                <h3>Join a live session</h3>
+                <p>Enter the 6-character code.</p>
+              </div>
+            </div>
+
+            <form id="joinForm" class="stacked-form join-form">
+              <div class="field-row">
+                <label for="joinCodeInput">
+                  Session code
+                  <input
+                    id="joinCodeInput"
+                    placeholder="AB12CD"
+                    maxlength="6"
+                    autocomplete="off"
+                    required
+                  />
+                </label>
+
+                <button type="submit" class="primary-btn">
+                  Join session
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="library-toolbar">
+            <input
+              id="librarySearch"
+              class="search-input"
+              placeholder="Search quizzes..."
+            />
+
+            <select id="librarySort" class="search-input">
+              <option value="recent">Most recent</option>
+              <option value="popular">Most played</option>
+              <option value="difficulty">Difficulty</option>
+              <option value="title">Title</option>
+              <option value="subject">Subject</option>
+            </select>
+
+            <select id="libraryFilter" class="search-input">
+              <option value="">All difficulties</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+
+          <div id="quizList" class="card-grid"></div>
+
+          <div
+            id="exportModal"
+            class="modal hidden"
+            role="dialog"
+            aria-modal="true"
+          >
+            <div class="modal-backdrop"></div>
+
+            <div class="modal-panel">
+              <div class="modal-head">
+                <h3>Export worksheet</h3>
+                <button
+                  id="exportModalClose"
+                  type="button"
+                  class="text-btn"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div id="exportModalList" class="export-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="analyticsView" class="view">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Your Analytics</h2>
+              <p>Track performance and engagement.</p>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <h3>Performance Overview</h3>
+              <div id="performanceChart" class="chart-placeholder"></div>
+            </div>
+
+            <div class="analytics-card">
+              <h3>Top Quizzes</h3>
+              <div id="topQuizzesList" class="mini-list"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Detailed History</h3>
+            <div id="detailedHistory" class="history-table"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Settings</h2>
+              <p>Customize your Quilet Arcade experience.</p>
+            </div>
+          </div>
+
+          <form id="settingsForm" class="stacked-form">
+            <fieldset class="settings-section">
+              <legend>Profile</legend>
+
+              <label for="profileNameInput">
+                Player name
+                <input
+                  id="profileNameInput"
+                  name="profileName"
+                  placeholder="Your name"
+                />
+              </label>
+
+              <label for="profileBioInput">
+                Bio
+                <textarea
+                  id="profileBioInput"
+                  name="bio"
+                  rows="2"
+                  placeholder="Tell us about yourself"
+                ></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset class="settings-section">
+              <legend>Appearance</legend>
+
+              <label for="themeSelect">
+                Theme
+                <select id="themeSelect" name="theme">
+                  <option value="system">System default</option>
+                  <option value="sunset">Sunset</option>
+                  <option value="ocean">Ocean</option>
+                  <option value="rainbow">Rainbow</option>
+                  <option value="candy">Candy</option>
+                  <option value="forest">Forest</option>
+                  <option value="galaxy">Galaxy</option>
+                  <option value="night">Night mode</option>
+                  <option value="kids">Kids soft</option>
+                </select>
+              </label>
+
+              <label class="checkbox-field">
+                <input id="compactModeInput" type="checkbox" />
+                <span>Compact layout</span>
+              </label>
+            </fieldset>
+
+            <div hidden aria-hidden="true">
+              <select id="gameModeSelect" tabindex="-1">
+                <option value="solo" selected>Solo</option>
+                <option value="host">Host session</option>
+              </select>
+
+              <input id="timedModeInput" type="checkbox" tabindex="-1" />
+
+              <input
+                id="questionTimeInput"
+                type="number"
+                min="5"
+                max="120"
+                value="20"
+                tabindex="-1"
+              />
+            </div>
+
+            <fieldset class="settings-section">
+              <legend>Notifications</legend>
+
+              <div class="settings-grid">
+                <label class="checkbox-field">
+                  <input id="quizStartNotificationsInput" type="checkbox" />
+                  <span>Notify me when a live quiz starts</span>
+                </label>
+
+                <label class="checkbox-field">
+                  <input
+                    id="quizAssignedNotificationsInput"
+                    type="checkbox"
+                  />
+                  <span>Notify me when a quiz is assigned</span>
+                </label>
+              </div>
+
+              <button
+                type="button"
+                id="enableNotificationsBtn"
+                class="secondary-btn"
+              >
+                Enable browser notifications
+              </button>
+
+              <p
+                id="notificationPermissionStatus"
+                class="muted-text"
+                aria-live="polite"
+              >
+                Browser permission has not been requested.
+              </p>
+            </fieldset>
+
+            <fieldset class="settings-section">
+              <legend>Accessibility</legend>
+
+              <div class="settings-grid">
+                <label class="checkbox-field">
+                  <input id="kidModeInput" name="kidMode" type="checkbox" />
+                  <span>Kid-friendly mode</span>
+                </label>
+
+                <label class="checkbox-field">
+                  <input
+                    id="soundInput"
+                    name="soundEffects"
+                    type="checkbox"
+                  />
+                  <span>Sound effects</span>
+                </label>
+
+                <label class="checkbox-field">
+                  <input
+                    id="animationsInput"
+                    name="animations"
+                    type="checkbox"
+                    checked
+                  />
+                  <span>Animations</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">
+                Save preferences
+              </button>
+
+              <button
+                type="button"
+                id="resetSettingsBtn"
+                class="secondary-btn"
+              >
+                Reset to defaults
+              </button>
+            </div>
+          </form>
+
+          <hr class="settings-divider" />
+
+          <div class="danger-zone">
+            <h3>Danger Zone</h3>
+
+            <div class="danger-actions">
+              <button
+                type="button"
+                id="exportDataBtn"
+                class="secondary-btn"
+              >
+                Export my data
+              </button>
+
+              <button
+                type="button"
+                id="deleteAccountBtn"
+                class="tiny-btn danger"
+              >
+                Delete account
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="playView" class="view">
+        <div class="panel">
+          <div id="playContent" class="play-card"></div>
+        </div>
+      </section>
+    </main>
+
+    <div
+      id="notificationToast"
+      class="notification-toast hidden"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="startup.js?v=2026.08.14.1"></script>
+</body>
+</html>
