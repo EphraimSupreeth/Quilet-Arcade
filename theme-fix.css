@@ -1,0 +1,414 @@
+/* Quilet Arcade theme compatibility fixes */
+
+/* Original System palette from styles.css */
+:root,
+body.theme-system {
+  --bg: #f4f7fb;
+  --panel: #ffffff;
+  --panel-soft: #f8fafc;
+  --text: #172033;
+  --muted: #64748b;
+  --accent: #2563eb;
+  --accent-2: #7c3aed;
+  --primary: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --border: #dfe7f1;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --shadow: 0 16px 42px rgba(15, 23, 42, 0.09);
+  --shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.16);
+  --page-background:
+    radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.1), transparent 30%),
+    radial-gradient(circle at 95% 10%, rgba(124, 58, 237, 0.1), transparent 28%),
+    #f4f7fb;
+  color-scheme: light;
+}
+
+/* Sunset */
+body.theme-sunset {
+  --bg: #fff7ed;
+  --panel: #fffdf9;
+  --panel-soft: #fff4e6;
+  --text: #3f2419;
+  --muted: #896354;
+  --accent: #ea580c;
+  --accent-2: #db2777;
+  --primary: #ea580c;
+  --accent-soft: rgba(234, 88, 12, 0.12);
+  --border: #f1d7c5;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(124, 45, 18, 0.07);
+  --shadow: 0 16px 42px rgba(124, 45, 18, 0.11);
+  --shadow-lg: 0 28px 70px rgba(124, 45, 18, 0.18);
+  --page-background: #fff7ed;
+  color-scheme: light;
+}
+
+/* Ocean */
+body.theme-ocean {
+  --bg: #effbff;
+  --panel: #ffffff;
+  --panel-soft: #ecf9fc;
+  --text: #123047;
+  --muted: #557488;
+  --accent: #0284c7;
+  --accent-2: #0d9488;
+  --primary: #0284c7;
+  --accent-soft: rgba(2, 132, 199, 0.11);
+  --border: #cfe5ed;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(12, 74, 110, 0.06);
+  --shadow: 0 16px 42px rgba(12, 74, 110, 0.1);
+  --shadow-lg: 0 28px 70px rgba(12, 74, 110, 0.17);
+  --page-background: #effbff;
+  color-scheme: light;
+}
+
+/* Rainbow */
+body.theme-rainbow {
+  --bg: #f8f7ff;
+  --panel: #ffffff;
+  --panel-soft: #f5f3ff;
+  --text: #26213b;
+  --muted: #6e6683;
+  --accent: #7c3aed;
+  --accent-2: #db2777;
+  --primary: #7c3aed;
+  --accent-soft: rgba(124, 58, 237, 0.11);
+  --border: #e2dcf1;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(76, 29, 149, 0.06);
+  --shadow: 0 16px 42px rgba(76, 29, 149, 0.1);
+  --shadow-lg: 0 28px 70px rgba(76, 29, 149, 0.17);
+  --page-background: #f8f7ff;
+  color-scheme: light;
+}
+
+/* Candy */
+body.theme-candy {
+  --bg: #fff5fa;
+  --panel: #ffffff;
+  --panel-soft: #fff0f7;
+  --text: #3d2032;
+  --muted: #876477;
+  --accent: #db2777;
+  --accent-2: #8b5cf6;
+  --primary: #db2777;
+  --accent-soft: rgba(219, 39, 119, 0.11);
+  --border: #f0d5e3;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(131, 24, 67, 0.06);
+  --shadow: 0 16px 42px rgba(131, 24, 67, 0.1);
+  --shadow-lg: 0 28px 70px rgba(131, 24, 67, 0.17);
+  --page-background: #fff5fa;
+  color-scheme: light;
+}
+
+/* Forest */
+body.theme-forest {
+  --bg: #f2f8f3;
+  --panel: #ffffff;
+  --panel-soft: #edf6ef;
+  --text: #193126;
+  --muted: #607769;
+  --accent: #15803d;
+  --accent-2: #0f766e;
+  --primary: #15803d;
+  --accent-soft: rgba(21, 128, 61, 0.11);
+  --border: #d3e5d7;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(20, 83, 45, 0.06);
+  --shadow: 0 16px 42px rgba(20, 83, 45, 0.1);
+  --shadow-lg: 0 28px 70px rgba(20, 83, 45, 0.17);
+  --page-background: #f2f8f3;
+  color-scheme: light;
+}
+
+/* Kids */
+body.theme-kids {
+  --bg: #fffbee;
+  --panel: #ffffff;
+  --panel-soft: #fff8dc;
+  --text: #2f2b40;
+  --muted: #716b83;
+  --accent: #4f46e5;
+  --accent-2: #e11d74;
+  --primary: #4f46e5;
+  --accent-soft: rgba(79, 70, 229, 0.11);
+  --border: #e9dfbd;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --shadow-sm: 0 4px 14px rgba(49, 46, 129, 0.06);
+  --shadow: 0 16px 42px rgba(49, 46, 129, 0.1);
+  --shadow-lg: 0 28px 70px rgba(49, 46, 129, 0.17);
+  --page-background: #fffbee;
+  color-scheme: light;
+}
+
+/* Shared dark palette */
+body.theme-galaxy,
+body.theme-night,
+body.system-dark-active {
+  --bg: #0d1424;
+  --panel: #151e30;
+  --panel-soft: #1b263a;
+  --text: #f1f5f9;
+  --muted: #a7b4c7;
+  --accent: #818cf8;
+  --accent-2: #c084fc;
+  --primary: #818cf8;
+  --accent-soft: rgba(129, 140, 248, 0.16);
+  --border: #304059;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --error: #fb7185;
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.2);
+  --shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.4);
+  --page-background: #0d1424;
+  color-scheme: dark;
+}
+
+/* Galaxy */
+body.theme-galaxy {
+  --bg: #100d25;
+  --panel: #1b1734;
+  --panel-soft: #241e42;
+  --text: #f5f3ff;
+  --muted: #b9afd5;
+  --accent: #a78bfa;
+  --accent-2: #ec4899;
+  --primary: #a78bfa;
+  --accent-soft: rgba(167, 139, 250, 0.17);
+  --border: #403660;
+  --page-background: #100d25;
+}
+
+/* Night */
+body.theme-night {
+  --bg: #0b1220;
+  --panel: #121c2d;
+  --panel-soft: #19263a;
+  --text: #edf4ff;
+  --muted: #a4b3c7;
+  --accent: #60a5fa;
+  --accent-2: #818cf8;
+  --primary: #60a5fa;
+  --accent-soft: rgba(96, 165, 250, 0.16);
+  --border: #2d405b;
+  --page-background: #0b1220;
+}
+
+/* Keep the page background synchronized with the selected theme */
+body {
+  background-color: var(--bg) !important;
+  color: var(--text);
+}
+
+html.restoring-session:not([data-quilet-ready="true"]) body {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html[data-quilet-ready="true"] body {
+  opacity: 1;
+}
+
+/* Host timing controls */
+.host-timing-options {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-soft);
+}
+
+.host-timing-options .checkbox-field {
+  margin: 0;
+}
+
+.host-timing-seconds {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  gap: 12px;
+  align-items: center;
+}
+
+.host-timing-seconds input {
+  min-height: 44px;
+}
+
+/* Topbar compatibility */
+#mainTopbar .topbar-actions .user-actions {
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+  grid-auto-rows: auto !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 10px !important;
+}
+
+#mainTopbar .user-actions > #appInstalledStatus,
+#mainTopbar .user-actions > #installAppBtn {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#mainTopbar .user-actions > #notificationBtn {
+  position: relative !important;
+  display: grid !important;
+  grid-column: 1 !important;
+  grid-row: auto !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  place-items: center !important;
+  overflow: visible !important;
+  border-radius: 14px !important;
+  font-size: 1.2rem !important;
+  line-height: 1 !important;
+}
+
+#mainTopbar #notificationBtn .toolbar-bell-icon {
+  display: grid !important;
+  width: 100% !important;
+  height: 100% !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  pointer-events: none;
+}
+
+#mainTopbar #notificationBtn .notification-unread-dot {
+  top: -4px !important;
+  right: -4px !important;
+  z-index: 5;
+}
+
+#mainTopbar .user-actions > #userBadge {
+  display: flex !important;
+  grid-column: 2 !important;
+  grid-row: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 7px 10px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  overflow: hidden !important;
+}
+
+#mainTopbar #userBadge .profile-avatar-badge {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+
+#mainTopbar #userBadge .profile-avatar-badge-avatar {
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  flex: 0 0 32px !important;
+}
+
+#mainTopbar #userBadge .profile-avatar-badge-name {
+  position: static !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  clip: auto !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+#mainTopbar .user-actions > #logoutBtn {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+}
+
+/* Dark-theme answer feedback */
+body.theme-galaxy .option-btn.correct,
+body.theme-night .option-btn.correct,
+body.system-dark-active .option-btn.correct {
+  border-color: var(--success);
+  background: rgba(74, 222, 128, 0.15);
+  color: #bbf7d0;
+}
+
+body.theme-galaxy .option-btn.wrong,
+body.theme-night .option-btn.wrong,
+body.system-dark-active .option-btn.wrong {
+  border-color: var(--error);
+  background: rgba(251, 113, 133, 0.15);
+  color: #fecdd3;
+}
+
+body.theme-galaxy .notification-toast,
+body.theme-night .notification-toast,
+body.system-dark-active .notification-toast {
+  background: #f1f5f9;
+  color: #172033;
+}
+
+@media (max-width: 900px) {
+  #mainTopbar .topbar-actions .user-actions {
+    padding: 12px !important;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--panel-soft);
+  }
+}
+
+@media (max-width: 560px) {
+  .host-timing-seconds {
+    grid-template-columns: 1fr;
+  }
+
+  #mainTopbar .topbar-actions .user-actions {
+    grid-template-columns: 46px minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  #mainTopbar .user-actions > #notificationBtn {
+    width: 46px !important;
+    min-width: 46px !important;
+    max-width: 46px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+}
