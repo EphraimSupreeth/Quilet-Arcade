@@ -147,19 +147,32 @@
 
   async function requireUser() {
     const client = getClient();
+    const localUser = readJson("quiletUser", null);
 
     if (!client) {
       throw new Error("Supabase is not available.");
+    }
+
+    if (!localUser?.id || !localUser?.email) {
+      throw new Error("Please sign in before hosting or joining a live quiz.");
     }
 
     const result = await client.auth.getSession();
 
     if (result.error) throw result.error;
 
-    const user = result.data.session?.user;
+    let user = result.data.session?.user;
 
-    if (!user || user.is_anonymous) {
-      throw new Error("Sign in before hosting or joining a live quiz.");
+    if (!user) {
+      const anonymousResult = await client.auth.signInAnonymously();
+
+      if (anonymousResult.error) {
+        throw new Error(
+          "Live quizzes need anonymous access enabled in Supabase."
+        );
+      }
+
+      user = anonymousResult.data.user;
     }
 
     return user;
