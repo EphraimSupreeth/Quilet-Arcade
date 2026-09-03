@@ -1,4 +1,4 @@
-const CACHE_NAME = "quilet-pwa-manual-update-v7";
+const CACHE_NAME = "quilet-pwa-manual-update-v8";
 
 const APP_SHELL = [
   "./",
@@ -139,6 +139,8 @@ async function checkForDeployedUpdate() {
 }
 
 function addUpdateInterface(response) {
+  return response;
+
   const contentType = response.headers.get("content-type") || "";
 
   if (!contentType.includes("text/html")) {

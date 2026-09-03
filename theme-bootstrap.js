@@ -560,6 +560,16 @@
   async function registerServiceWorker() {
     if (!("serviceWorker" in navigator)) return null;
 
+    let hasControlledPage = Boolean(navigator.serviceWorker.controller);
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!hasControlledPage) {
+        hasControlledPage = true;
+        return;
+      }
+
+      window.location.reload();
+    });
+
     const isSecure =
       window.isSecureContext ||
       window.location.hostname === "localhost";

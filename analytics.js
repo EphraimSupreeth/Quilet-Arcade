@@ -1187,10 +1187,8 @@
     enhanceNavigation();
     addAnalyticsControls();
     bindEvents();
-    observeUpdateButtonPlacement();
     renderAnalytics();
     finishUpdateBoot();
-    monitorApplicationUpdates();
 
     window.QuiletAnalytics = {
       refresh: () => scheduleRefresh(),
