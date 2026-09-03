@@ -1335,7 +1335,7 @@ async function createAccount(event) {
     name,
     email,
     passwordHash: await hashPassword(password),
-    kidMode: $("#signupKidsMode").checked,
+    kidMode: false,
     createdAt: new Date().toISOString()
   };
 
@@ -1396,7 +1396,6 @@ function saveSettings(event) {
 
   if (state.currentUser) {
     state.currentUser.name = $("#profileNameInput").value.trim() || "Learner";
-    state.currentUser.kidMode = $("#kidModeInput").checked;
 
     const account = state.accounts.find(
       (item) => item.email === state.currentUser.email
@@ -1404,7 +1403,6 @@ function saveSettings(event) {
 
     if (account) {
       account.name = state.currentUser.name;
-      account.kidMode = state.currentUser.kidMode;
     }
   }
 
@@ -1413,17 +1411,12 @@ function saveSettings(event) {
     gameMode: $("#gameModeSelect").value,
     timedMode: $("#timedModeInput").checked,
     questionTime: Math.max(5, Math.min(120, Number($("#questionTimeInput").value) || 20)),
-    soundEffects: $("#soundInput").checked,
-    animations: $("#animationsInput").checked
+    soundEffects: false,
+    animations: true
   };
 
   state.theme = $("#themeSelect").value;
   state.compact = $("#compactModeInput").checked;
-
-  document.body.style.setProperty(
-    "animation-play-state",
-    state.preferences.animations ? "running" : "paused"
-  );
 
   saveState();
   applyTheme();

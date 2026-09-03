@@ -30,6 +30,7 @@
     wordChoices: [],
     pendingChoices: [],
     maskedWord: "",
+    hint: "",
     round: 0,
     maxRounds: 3,
     turnIndex: 0,
@@ -120,6 +121,14 @@
     return [...String(word || "")]
       .map((character) => character === " " ? "  " : "_")
       .join(" ");
+  }
+
+  function getHint(word) {
+    const normalized = String(word || "").trim();
+    if (!normalized) return "";
+
+    const visibleLetters = [...normalized].filter((character) => character !== " ").length;
+    return `${normalized[0].toUpperCase()}... (${visibleLetters} letters)`;
   }
 
   function getClient() {
@@ -556,6 +565,7 @@
       turnOrder: game.turnOrder,
       seconds: game.seconds,
       maskedWord: game.status === "active" ? maskWord(game.word) : "",
+      hint: game.status === "active" ? getHint(game.word) : "",
       lastWord: game.lastWord,
       scores: game.scores,
       guessed: [...game.guessed]
@@ -579,6 +589,7 @@
       : game.turnOrder;
     game.seconds = Number(payload.seconds || 80);
     game.maskedWord = payload.maskedWord || "";
+    game.hint = payload.hint || "";
     game.lastWord = payload.lastWord || "";
     game.scores = payload.scores || game.scores;
     game.guessed = new Set(payload.guessed || []);
@@ -604,6 +615,7 @@
           <div class="dg-round-word" data-dg-word>
             Waiting to start
           </div>
+          <small class="dg-round-hint" data-dg-hint hidden></small>
           <span class="dg-time" data-dg-time>—</span>
         </div>
 
@@ -1119,6 +1131,7 @@
 
     game.word = word;
     game.maskedWord = maskWord(word);
+    game.hint = getHint(word);
     game.wordChoices = [];
     game.pendingChoices = [];
     game.seconds = 80;
@@ -1136,7 +1149,8 @@
       turnIndex: game.turnIndex,
       turnOrder: game.turnOrder,
       seconds: game.seconds,
-      maskedWord: game.maskedWord
+      maskedWord: game.maskedWord,
+      hint: game.hint
     });
 
     addChat(
@@ -1163,6 +1177,7 @@
       : game.turnOrder;
     game.seconds = Number(payload.seconds || 80);
     game.maskedWord = payload.maskedWord || "";
+    game.hint = payload.hint || "";
     game.lastWord = "";
     game.status = "active";
     game.guessed.clear();
@@ -1325,8 +1340,9 @@
           <div>✅</div>
           <h3>Drawing turn complete</h3>
           <p>
-            The word was
-            <strong>${escapeHtml(game.lastWord || "unknown")}</strong>.
+            ${isCurrentArtist()
+              ? `The word was <strong>${escapeHtml(game.lastWord || "unknown")}</strong>.`
+              : "The drawing turn is complete."}
           </p>
           <p>The next player will choose a word shortly.</p>
         </div>
@@ -1371,6 +1387,14 @@
       } else {
         word.textContent = "Waiting to start";
       }
+    }
+
+    const hint = document.querySelector("[data-dg-hint]");
+    if (hint) {
+      hint.textContent = drawable || game.status !== "active"
+        ? ""
+        : `Hint: ${game.hint || "A word is being drawn"}`;
+      hint.hidden = !hint.textContent;
     }
 
     if (time) {

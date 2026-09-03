@@ -184,6 +184,13 @@
   white-space: nowrap;
 }
 
+.dg-round-hint {
+  display: block;
+  min-height: 1.2em;
+  color: var(--muted);
+  font-weight: 800;
+}
+
 .dg-time {
   min-width: 50px;
   color: var(--error);
