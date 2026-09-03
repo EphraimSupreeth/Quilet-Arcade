@@ -28,7 +28,6 @@
 
   function saveUser(user) {
     if (!user?.id || !user?.email) {
-      localStorage.removeItem("quiletUser");
       return;
     }
 

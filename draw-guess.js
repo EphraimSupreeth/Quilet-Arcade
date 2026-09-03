@@ -356,7 +356,19 @@
     const sessionResult = await client.auth.getSession();
     if (sessionResult.error) throw sessionResult.error;
 
-    const user = sessionResult.data.session?.user;
+    let user = sessionResult.data.session?.user;
+
+    if (!user) {
+      const anonymousResult = await client.auth.signInAnonymously();
+
+      if (anonymousResult.error) {
+        throw new Error(
+          "Draw & Guess needs anonymous access enabled in Supabase."
+        );
+      }
+
+      user = anonymousResult.data.user;
+    }
 
     if (!user) {
       throw new Error("Sign in before joining a room.");

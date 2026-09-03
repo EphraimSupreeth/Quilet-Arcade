@@ -1682,6 +1682,7 @@ $("#logoutBtn")?.addEventListener("click", (event) => {
     topbar.style.setProperty("display", "none", "important");
   }
 
+  void window.supabaseClient?.auth.signOut();
   window.scrollTo(0, 0);
   saveState();
   showMessage("You have signed out.");
