@@ -36,6 +36,118 @@
   font-weight: 900;
 }
 
+.chat-room-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-room-tools strong {
+  margin-right: auto;
+  color: var(--accent);
+}
+
+.chat-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  min-height: 390px;
+}
+
+.chat-friends {
+  padding: 18px 16px 18px 0;
+  border-right: 1px solid var(--border);
+}
+
+.chat-friends h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.chat-friend {
+  display: flex;
+  width: 100%;
+  gap: 9px;
+  align-items: center;
+  padding: 9px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.chat-friend:hover,
+.chat-friend.selected {
+  border-color: var(--border);
+  background: var(--accent-soft);
+}
+
+.chat-friend .chat-message-avatar {
+  width: 32px;
+  height: 32px;
+  flex-basis: 32px;
+}
+
+.chat-friend strong,
+.chat-friend small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-friend small {
+  max-width: 140px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.chat-empty-small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.chat-join-form {
+  margin-top: 24px;
+}
+
+.chat-join-form label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.chat-join-form > div {
+  display: flex;
+  gap: 6px;
+}
+
+.chat-join-form input {
+  min-width: 0;
+  width: 100%;
+}
+
+.chat-join-form .primary-btn {
+  padding: 8px 10px;
+}
+
+.chat-conversation {
+  min-width: 0;
+  padding-left: 16px;
+}
+
+.chat-selected {
+  min-height: 20px;
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .chat-messages {
   display: flex;
   min-height: 330px;
@@ -127,6 +239,20 @@
 
   .chat-message {
     max-width: 92%;
+  }
+
+  .chat-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-friends {
+    padding: 16px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chat-conversation {
+    padding-left: 0;
   }
 
   .chat-form {
