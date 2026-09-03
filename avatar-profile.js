@@ -363,7 +363,7 @@
       .profile-editor-panel {
         position: relative;
         z-index: 1;
-        width: min(100%, 560px);
+        width: min(100%, 504px);
         max-height: calc(100dvh - 32px);
         padding: clamp(20px, 4vw, 30px);
         overflow: auto;
@@ -407,22 +407,22 @@
 
       .profile-editor-layout {
         display: grid;
-        grid-template-columns: 100px minmax(0, 1fr);
+        grid-template-columns: 88px minmax(0, 1fr);
         gap: 20px;
         align-items: start;
       }
 
       .profile-editor-preview {
         display: grid;
-        width: 96px;
-        height: 96px;
+        width: 80px;
+        height: 80px;
         place-items: center;
         overflow: hidden;
         border: 4px solid var(--panel);
         border-radius: 50%;
         background: var(--accent-soft);
         box-shadow: var(--shadow);
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
 
       .profile-editor-content {
