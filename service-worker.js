@@ -1,4 +1,4 @@
-const CACHE_NAME = "quilet-pwa-manual-update-v4";
+const CACHE_NAME = "quilet-pwa-manual-update-v5";
 
 const APP_SHELL = [
   "./",
@@ -8,6 +8,8 @@ const APP_SHELL = [
   "./mobile-friendly.css",
   "./theme-fix.css",
   "./draw-guess.css",
+  "./chat.js",
+  "./chat.css",
   "./theme-bootstrap.js",
   "./app.js",
   "./quiz-editing.js",

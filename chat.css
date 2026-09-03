@@ -1,0 +1,135 @@
+.chat-panel {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.chat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-header h2 {
+  margin: 0;
+}
+
+.chat-header p:not(.eyebrow) {
+  margin: 5px 0 0;
+}
+
+.chat-online {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  border: 1px solid color-mix(in srgb, var(--success) 35%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--success) 10%, var(--panel));
+  color: var(--success);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.chat-messages {
+  display: flex;
+  min-height: 330px;
+  max-height: 52vh;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 4px;
+  overflow-y: auto;
+}
+
+.chat-empty {
+  display: grid;
+  min-height: 280px;
+  place-items: center;
+  color: var(--muted);
+  text-align: center;
+}
+
+.chat-message {
+  display: flex;
+  max-width: 78%;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.chat-message.own {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.chat-message-avatar {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  font-size: 1.2rem;
+}
+
+.chat-message-body {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel-soft);
+}
+
+.chat-message.own .chat-message-body {
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+}
+
+.chat-message-body strong {
+  font-size: 0.82rem;
+}
+
+.chat-message-body p {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.chat-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.chat-form input {
+  min-height: 46px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .chat-header {
+    flex-direction: column;
+  }
+
+  .chat-message {
+    max-width: 92%;
+  }
+
+  .chat-form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -24,7 +24,7 @@ html[data-quilet-ready="true"] .app-shell {
   place-items: center;
   overflow: hidden;
   border: 5px solid rgba(255, 255, 255, 0.75);
-  border-radius: 50%;
+  border-radius: 18px;
   background: radial-gradient(
     circle at 30% 25%,
     rgba(255, 255, 255, 0.95),

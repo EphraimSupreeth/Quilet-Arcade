@@ -133,7 +133,8 @@
       "quiz-catalog.js",
       "game-modes.js",
       "avatar-profile.js",
-      "draw-guess.js"
+      "draw-guess.js",
+      "chat.js"
     ];
 
     const results = await Promise.allSettled(
