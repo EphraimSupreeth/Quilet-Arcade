@@ -201,6 +201,16 @@
         font-weight: 700;
       }
 
+      .sidebar-profile-description {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 0.68rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
       .sidebar-profile-edit-icon {
         display: grid;
         width: 28px;
@@ -735,6 +745,11 @@
           <small class="sidebar-profile-label">
             Signed-in profile
           </small>
+          ${user.description ? `
+            <small class="sidebar-profile-description">
+              ${escapeHtml(user.description)}
+            </small>
+          ` : ""}
         </span>
 
         <span class="sidebar-profile-edit-icon" aria-hidden="true">
@@ -810,6 +825,16 @@
                 placeholder="Enter your display name"
                 required
               />
+            </label>
+
+            <label for="profileEditorDescription">
+              Description
+              <textarea
+                id="profileEditorDescription"
+                maxlength="160"
+                rows="3"
+                placeholder="Tell people a little about yourself"
+              ></textarea>
             </label>
 
             <strong>Choose a profile picture</strong>
@@ -911,11 +936,18 @@
 
     const modal = createProfileEditor();
     const nameInput = modal.querySelector("#profileEditorName");
+    const descriptionInput = modal.querySelector(
+      "#profileEditorDescription"
+    );
 
     selectedAvatar = getSavedAvatar();
 
     if (nameInput) {
       nameInput.value = user.name || "Learner";
+    }
+
+    if (descriptionInput) {
+      descriptionInput.value = user.description || "";
     }
 
     renderEditorPreview();
@@ -1030,10 +1062,17 @@
 
     const user = getCurrentUser();
     const nameInput = document.querySelector("#profileEditorName");
+    const descriptionInput = document.querySelector(
+      "#profileEditorDescription"
+    );
     const name = String(nameInput?.value || "")
       .replace(/\s+/g, " ")
       .trim()
       .slice(0, 60);
+    const description = String(descriptionInput?.value || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 160);
 
     if (!user) {
       showMessage("Your signed-in profile could not be found.");
@@ -1050,7 +1089,8 @@
 
     const updatedUser = {
       ...user,
-      name
+      name,
+      description
     };
 
     const avatars = getAvatarMap();
@@ -1071,7 +1111,8 @@
         if (accountIndex >= 0) {
           accounts[accountIndex] = {
             ...accounts[accountIndex],
-            name
+            name,
+            description
           };
 
           writeJson("quiletAccounts", accounts);
