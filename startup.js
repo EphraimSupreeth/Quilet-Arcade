@@ -134,7 +134,8 @@
       "game-modes.js",
       "avatar-profile.js",
       "draw-guess.js",
-      "chat.js"
+      "chat.js",
+      "arcade-enhancements.js"
     ];
 
     const results = await Promise.allSettled(
