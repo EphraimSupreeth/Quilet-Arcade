@@ -172,9 +172,9 @@
   }
 
   function addLibraryEntry() {
-    const joinPanel = document.querySelector("#joinQuizPanel");
+    const activity = document.querySelector("#drawGuessActivity");
 
-    if (!joinPanel || document.querySelector("#drawGuessLibraryPanel")) {
+    if (!activity || document.querySelector("#drawGuessLibraryPanel")) {
       return;
     }
 
@@ -198,7 +198,7 @@
       </div>
     `;
 
-    joinPanel.insertAdjacentElement("beforebegin", panel);
+    activity.appendChild(panel);
   }
 
   function createOverlay() {
