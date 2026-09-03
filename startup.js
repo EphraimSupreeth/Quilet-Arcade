@@ -129,7 +129,11 @@
     const enhancementScripts = [
       "quiz-editing.js",
       "analytics.js",
-      "dark-mode.js"
+      "dark-mode.js",
+      "quiz-catalog.js",
+      "game-modes.js",
+      "avatar-profile.js",
+      "draw-guess.js"
     ];
 
     const results = await Promise.allSettled(
