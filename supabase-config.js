@@ -11,6 +11,11 @@
   const supabaseAnonKey =
     window.SUPABASE_ANON_KEY || configuredSupabaseAnonKey;
 
+  window.__SUPABASE_CONFIG__ = {
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey
+  };
+
   window.supabaseClient = null;
 
   const hasValidConfiguration =
@@ -57,6 +62,9 @@
         }
       }
     );
+
+    window.__SUPABASE_CLIENT__ = window.supabaseClient;
+    window.__QUILET_SUPABASE_CLIENT__ = window.supabaseClient;
 
     window.supabaseClient.auth.onAuthStateChange(
       (_event, session) => {
