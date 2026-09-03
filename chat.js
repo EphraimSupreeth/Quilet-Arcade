@@ -261,7 +261,8 @@
 
   async function sendMessage(event) {
     event.preventDefault();
-    const input = event.currentTarget.elements.message;
+    const form = event.target.closest("[data-chat-form]");
+    const input = form?.elements.message;
     const text = String(input.value || "").replace(/\s+/g, " ").trim();
     const user = readUser();
 
@@ -273,7 +274,7 @@
         return;
       }
 
-      await state.channel.send({
+      const result = await state.channel.send({
         type: "broadcast",
         event: "message",
         payload: {
@@ -284,6 +285,11 @@
           recipientId: state.selectedFriendId || ""
         }
       });
+
+      if (result?.status && result.status !== "ok") {
+        throw new Error(`Message delivery failed: ${result.status}`);
+      }
+
       addMessage({ userId: state.currentUserId, name: user.name, text });
       input.value = "";
     } catch (error) {
