@@ -152,6 +152,7 @@
 
   async function startApplication() {
     const coreScripts = [
+      "theme-bootstrap.js",
       "supabase-config.js",
       "supabase-join.js",
       "app.js"

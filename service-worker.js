@@ -1,4 +1,4 @@
-const CACHE_NAME = "quilet-pwa-manual-update-v3";
+const CACHE_NAME = "quilet-pwa-manual-update-v4";
 
 const APP_SHELL = [
   "./",
