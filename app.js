@@ -1823,3 +1823,75 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// Password Reset Function
+async function handlePasswordReset() {
+  const user = state.currentUser;
+
+  if (!user || !user.email) {
+    showMessage("Please sign in before attempting to reset your password.");
+    return;
+  }
+
+  // 1. Supabase Reset Request (if Supabase client is available)
+  if (window.supabaseClient) {
+    try {
+      const { error } = await window.supabaseClient.auth.resetPasswordForEmail(
+        user.email,
+        { redirectTo: window.location.origin }
+      );
+
+      if (error) throw error;
+
+      showMessage(`Password reset email sent to ${user.email}. Check your inbox!`);
+      return;
+    } catch (err) {
+      console.warn("Supabase email reset failed, falling back to local account check:", err);
+    }
+  }
+
+  // 2. Local Account Password Reset Flow
+  const currentPassword = window.prompt("Enter your CURRENT password:");
+  if (!currentPassword) return;
+
+  const currentHash = await hashPassword(currentPassword);
+  const account = state.accounts.find(
+    (acc) => acc.email.toLowerCase() === user.email.toLowerCase()
+  );
+
+  if (!account) {
+    showMessage("Unable to locate your account record.");
+    return;
+  }
+
+  const matches =
+    account.passwordHash === currentHash ||
+    account.password === currentPassword ||
+    account.passwordHash === `legacy:${currentPassword}`;
+
+  if (!matches) {
+    showMessage("Incorrect current password.");
+    return;
+  }
+
+  const newPassword = window.prompt("Enter your NEW password (minimum 8 characters):");
+  if (!newPassword) return;
+
+  if (newPassword.length < 8) {
+    showMessage("New password must be at least 8 characters long.");
+    return;
+  }
+
+  account.passwordHash = await hashPassword(newPassword);
+  delete account.password;
+
+  saveState();
+  showMessage("Your password has been updated successfully.");
+}
+
+// Bind event listener safely
+document.addEventListener("DOMContentLoaded", () => {
+  const resetBtn = document.querySelector("#resetPasswordBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", handlePasswordReset);
+  }
+});

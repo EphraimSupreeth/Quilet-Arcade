@@ -608,19 +608,64 @@
         </div>
       </section>
 
-      <section id="settingsView" class="view">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>Settings</h2>
-              <p>Customize your Quilet Arcade experience.</p>
-            </div>
-          </div>
+     <section id="settingsView" class="view">
+  <div class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Preferences</p>
+        <h2>Account & App Settings</h2>
+        <p class="muted-text">Customize your profile, game preferences, and account security.</p>
+      </div>
+    </div>
 
-          <form id="settingsForm" class="stacked-form">
-            <fieldset class="settings-section">
-              <legend>Profile</legend>
+    <!-- The missing #settingsForm starts here -->
+    <form id="settingsForm">
+      <!-- Profile Settings Section -->
+      <fieldset class="settings-section">
+        <legend>Profile Settings</legend>
+        <label for="profileBioInput">
+          Bio / Description
+          <textarea id="profileBioInput" placeholder="Tell us about yourself..."></textarea>
+        </label>
+      </fieldset>
 
+      <!-- Game Preferences Section -->
+      <fieldset class="settings-section">
+        <legend>Game Preferences</legend>
+        <div class="settings-grid">
+          <label for="gameModeSelect">
+            Default Game Mode
+            <select id="gameModeSelect">
+              <option value="solo">Solo Practice</option>
+              <option value="timed">Timed Challenge</option>
+            </select>
+          </label>
+          <label for="questionTimeInput">
+            Question Time Limit (seconds)
+            <input type="number" id="questionTimeInput" min="5" max="120" value="20" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Security & Password Reset Section -->
+      <fieldset class="settings-section">
+        <legend>Security & Password</legend>
+        <p class="muted-text">Update your account password securely.</p>
+        <div class="form-actions" style="margin-top: 12px;">
+          <button type="button" id="resetPasswordBtn" class="secondary-btn">
+            Reset Password
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- Form Actions -->
+      <div class="form-actions" style="margin-top: 20px;">
+        <button type="submit" class="primary-btn">Save Preferences</button>
+        <button type="button" id="resetSettingsBtn" class="secondary-btn">Reset Defaults</button>
+      </div>
+    </form>
+  </div>
+</section>
               <label for="profileNameInput">
                 Player name
                 <input
