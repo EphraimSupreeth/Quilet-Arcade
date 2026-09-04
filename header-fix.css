@@ -90,3 +90,18 @@ body.auth-mode #workspaceHeader,
     min-width: 0 !important;
   }
 }
+/* Prevent Settings View from leaking into other navigation views */
+.view:not(.active) {
+  display: none !important;
+}
+
+#settingsView:not(.active) {
+  display: none !important;
+}
+
+/* Hide Workspace Header and Settings completely on Auth Screen */
+body.auth-mode #workspaceHeader,
+#authView.active ~ #workspaceHeader,
+#authView.active ~ #settingsView {
+  display: none !important;
+}
