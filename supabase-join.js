@@ -252,7 +252,7 @@
         <div>
           <p class="eyebrow">Host leaderboard</p>
           <h2>${escapeHtml(session.title)}</h2>
-          <p class="muted-text">${finished ? "Quiz summary" : "Room controls and participants"}</p>
+          <p class="muted-text">Quiz summary${finished ? "" : " • Waiting for participants"}</p>
         </div>
         <button type="button" class="icon-btn" data-close-host-leaderboard aria-label="Close leaderboard">✕</button>
       </div>
@@ -335,6 +335,7 @@
 
       liveState.hostSession = result.data;
       liveState.hostModalOpen = true;
+      renderHostLeaderboardModal(result.data);
       updateHostCode(result.data.code);
       await subscribeAsHost(result.data.id);
 
@@ -415,6 +416,8 @@
 
       const count = $("#playContent .leaderboard-panel .badge");
       if (count) count.textContent = `${players.length} / 30 joined`;
+
+      renderHostLeaderboardModal(session, members);
 
       list.innerHTML = `
         <div class="leaderboard-item">
