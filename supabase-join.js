@@ -4,6 +4,7 @@
     hostSession: null,
     playerSession: null,
     member: null,
+    playerAvatar: "🧑‍🎓",
     sessionChannel: null,
     memberChannel: null,
     publishing: false,
@@ -91,6 +92,10 @@
     return String(
       readJson("quiletUser", {})?.name || "Learner"
     ).trim().slice(0, 32);
+  }
+
+  function getSelectedAvatar() {
+    return $("#joinAvatarSelect")?.value || "🧑‍🎓";
   }
 
   function getJoinLink(code) {
@@ -518,8 +523,8 @@
           `}
         </div>
         <div class="copy-block" style="margin-top:18px">
-          <strong class="session-code">${escapeHtml(session.code)}</strong>
-          <button type="button" class="secondary-btn" data-copy-live-code="${escapeHtml(session.code)}">
+          <strong class="session-code">${escapeHtml(latest.code)}</strong>
+          <button type="button" class="secondary-btn" data-copy-live-code="${escapeHtml(latest.code)}">
             Copy code
           </button>
         </div>
@@ -602,6 +607,7 @@
 
       liveState.playerSession = result.data.session;
       liveState.member = result.data.member;
+      liveState.playerAvatar = getSelectedAvatar();
       liveState.answeredQuestion = null;
 
       activatePlayView();
@@ -666,6 +672,7 @@
           <p class="eyebrow">Live session ${escapeHtml(session.code)}</p>
           <h2>${escapeHtml(session.title)}</h2>
           <h3>You're in!</h3>
+          <p class="live-player-avatar" aria-label="Your selected avatar">${escapeHtml(liveState.playerAvatar)}</p>
           <p>Waiting for the host to start the quiz.</p>
           <div class="quilet-waiting-pulse">● Connected</div>
           <button type="button" class="secondary-btn" data-leave-live>
@@ -699,6 +706,7 @@
         <div>
           <p class="eyebrow">Live quiz • ${escapeHtml(session.code)}</p>
           <h2>${escapeHtml(session.title)}</h2>
+          <p class="muted-text">Your avatar ${escapeHtml(liveState.playerAvatar)}</p>
         </div>
         <span class="badge">
           Question ${session.current_question + 1} of ${questions.length}

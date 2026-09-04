@@ -14,6 +14,7 @@
     "#111827", "#ef4444", "#f97316", "#eab308", "#22c55e",
     "#06b6d4", "#2563eb", "#7c3aed", "#db2777", "#ffffff"
   ];
+    const AVATARS = ["🧑‍🎓", "🦊", "🐼", "🦄", "🤖", "🚀"];
 
   const game = {
     client: null,
@@ -44,7 +45,8 @@
     drawing: false,
     lastPoint: null,
     color: "#111827",
-    width: 6
+      width: 6,
+      avatar: "🧑‍🎓"
   };
 
   function readJson(key, fallback) {
@@ -309,6 +311,12 @@
             required
           />
         </label>
+          <label>
+            Avatar
+            <select name="playerAvatar">
+              ${AVATARS.map((avatar) => `<option value="${avatar}">${avatar}</option>`).join("")}
+            </select>
+          </label>
 
         ${mode === "join" ? `
           <label>
@@ -353,7 +361,7 @@
     });
   }
 
-  async function connectRoom(code, name, isHost) {
+  async function connectRoom(code, name, isHost, avatar = "🧑‍🎓") {
     const client = getClient();
 
     if (!client) {
@@ -388,6 +396,7 @@
       code,
       playerId: user.id,
       playerName: name,
+      avatar,
       hostId: isHost ? user.id : "",
       isHost,
       status: "waiting",
@@ -406,6 +415,7 @@
         id: user.id,
         name,
         host: isHost,
+        avatar,
         joinedAt: Date.now()
       }]
     });
@@ -450,6 +460,7 @@
           await game.channel.track({
             id: game.playerId,
             name: game.playerName,
+              avatar: game.avatar,
             host: game.isHost,
             joinedAt: Date.now()
           });
@@ -459,7 +470,8 @@
           } else {
             void send("hello", {
               id: game.playerId,
-              name: game.playerName
+                name: game.playerName,
+                avatar: game.avatar
             });
           }
 
@@ -494,6 +506,7 @@
             id: entry.id,
             name: entry.name || "Player",
             host: Boolean(entry.host),
+            avatar: entry.avatar || "🧑‍🎓",
             joinedAt: Number(entry.joinedAt || Date.now())
           });
         }
@@ -505,6 +518,7 @@
         id: game.playerId,
         name: game.playerName,
         host: game.isHost,
+        avatar: game.avatar,
         joinedAt: Date.now()
       });
     }
@@ -873,7 +887,7 @@
             player.id === game.artistId ? "active-artist" : ""
           }">
             <strong>
-              ${index + 1}. ${escapeHtml(player.name)}
+              ${escapeHtml(player.avatar || "🧑‍🎓")} ${index + 1}. ${escapeHtml(player.name)}
               ${player.id === game.hostId ? " 👑" : ""}
               ${player.id === game.artistId ? " 🖌️" : ""}
               ${game.guessed.has(player.id) ? " ✅" : ""}
@@ -1633,6 +1647,7 @@
           .replace(/\s+/g, " ")
           .trim()
           .slice(0, 32);
+        const avatar = setup.elements.playerAvatar?.value || "🧑‍🎓";
 
         const code =
           mode === "host"
@@ -1659,7 +1674,7 @@
         button.textContent = "Connecting…";
 
         try {
-          await connectRoom(code, name, mode === "host");
+          await connectRoom(code, name, mode === "host", avatar);
 
           showMessage(
             mode === "host"

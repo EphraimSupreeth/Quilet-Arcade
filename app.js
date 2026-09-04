@@ -955,6 +955,13 @@ function renderHostLobby() {
         </div>
       </div>
 
+      <div class="copy-block" style="margin-top:18px">
+        <strong class="session-code">${play.sessionCode}</strong>
+        <button type="button" class="secondary-btn" data-copy-code>
+          Copy code
+        </button>
+      </div>
+
       <div class="form-actions" style="margin-top:18px">
         <button type="button" class="primary-btn" data-start-live-game>
           Start quiz
