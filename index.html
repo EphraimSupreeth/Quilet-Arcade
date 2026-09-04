@@ -621,13 +621,17 @@
     <!-- The missing #settingsForm starts here -->
     <form id="settingsForm">
       <!-- Profile Settings Section -->
-      <fieldset class="settings-section">
-        <legend>Profile Settings</legend>
-        <label for="profileBioInput">
-          Bio / Description
-          <textarea id="profileBioInput" placeholder="Tell us about yourself..."></textarea>
-        </label>
-      </fieldset>
+      <!-- Inside #settingsForm in index.html -->
+<fieldset class="settings-section">
+  <legend>Account Security</legend>
+  <p class="muted-text">Manage your account authentication and password.</p>
+  
+  <div class="form-actions" style="margin-top: 12px;">
+    <button type="button" id="resetPasswordBtn" class="secondary-btn">
+      Reset Password
+    </button>
+  </div>
+</fieldset>
 
       <!-- Game Preferences Section -->
       <fieldset class="settings-section">

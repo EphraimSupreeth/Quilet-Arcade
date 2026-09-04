@@ -115,3 +115,55 @@ body.auth-mode #workspaceHeader,
     width: auto !important;
   }
 }
+/* Ensure New Quiz button fits inside its box without overflowing */
+.header-new-quiz-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: 40px !important;
+  max-width: 100% !important;
+  padding: 0 12px !important;
+  border: none !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 0.85rem !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Hide Workspace Header and Settings Panel completely on Auth / Sign-in screen */
+body.auth-mode #workspaceHeader,
+#authView.active ~ #workspaceHeader,
+body.auth-mode #settingsView,
+#authView.active ~ #settingsView,
+#authView.active #settingsForm,
+.auth-mode .settings-section {
+  display: none !important;
+}
+
+/* Mobile Responsiveness for Header Actions */
+@media (max-width: 680px) {
+  #workspaceHeader .workspace-header-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 6px !important;
+  }
+
+  .header-search-box {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+
+  .header-new-quiz-btn {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+}
