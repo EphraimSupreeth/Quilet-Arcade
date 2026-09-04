@@ -183,7 +183,7 @@ begin
     attempt := attempt + 1;
 
     generated_code := upper(substr(
-      encode(gen_random_bytes(8), 'hex'),
+      md5(random()::text || clock_timestamp()::text),
       1,
       6
     ));

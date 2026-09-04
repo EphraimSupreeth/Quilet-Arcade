@@ -38,6 +38,10 @@
   function describeError(error) {
     const message = String(error?.message || error || "Unknown error");
 
+    if (message.toLowerCase().includes("gen_random_bytes")) {
+      return "Live quiz setup needs the updated quiz-live.sql. Run it in Supabase, then try hosting again.";
+    }
+
     if (message.toLowerCase().includes("already answered")) {
       return "You already answered this question.";
     }
