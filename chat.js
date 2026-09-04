@@ -8,7 +8,8 @@
     currentUserId: "",
     roomCode: "",
     selectedFriendId: "",
-    friends: []
+    friends: [],
+    deletedContactIds: new Set()
   };
 
   function readUser() {
@@ -81,6 +82,30 @@
     return url.toString();
   }
 
+  function deletedContactsKey(roomCode = state.roomCode) {
+    return `quiletChatDeletedContacts:${roomCode}`;
+  }
+
+  function loadDeletedContacts() {
+    try {
+      const values = JSON.parse(
+        localStorage.getItem(deletedContactsKey()) || "[]"
+      );
+      state.deletedContactIds = new Set(
+        Array.isArray(values) ? values.map(String) : []
+      );
+    } catch {
+      state.deletedContactIds = new Set();
+    }
+  }
+
+  function saveDeletedContacts() {
+    localStorage.setItem(
+      deletedContactsKey(),
+      JSON.stringify([...state.deletedContactIds])
+    );
+  }
+
   function renderEmpty(message) {
     const messages = document.querySelector("[data-chat-messages]");
     if (!messages) return;
@@ -96,6 +121,8 @@
       message.userId !== state.currentUserId &&
       String(message.userId) !== state.selectedFriendId
     ) return;
+
+    if (state.deletedContactIds.has(String(message.userId))) return;
 
     if (
       message.recipientId &&
@@ -151,6 +178,7 @@
 
     state.currentUserId = String(user.id);
     state.roomCode = roomCode;
+    loadDeletedContacts();
     localStorage.setItem("quiletChatRoom", roomCode);
     state.channel = supabase
       .channel(`quilet-community-chat:${roomCode}`, {
@@ -197,9 +225,22 @@
     const online = state.channel?.presenceState() || {};
     const total = Object.keys(online).length;
     if (count) count.textContent = `${total || 1} online`;
-    state.friends = Object.values(online)
-      .flat()
-      .filter((friend) => String(friend.id) !== state.currentUserId);
+    const uniqueFriends = new Map();
+
+    Object.values(online).flat().forEach((friend) => {
+      const friendId = String(friend?.id || "");
+
+      if (
+        friendId &&
+        friendId !== state.currentUserId &&
+        !state.deletedContactIds.has(friendId) &&
+        !uniqueFriends.has(friendId)
+      ) {
+        uniqueFriends.set(friendId, friend);
+      }
+    });
+
+    state.friends = [...uniqueFriends.values()];
 
     if (state.friends.length && !state.selectedFriendId) {
       state.selectedFriendId = String(state.friends[0].id);
@@ -225,10 +266,14 @@
     }
 
     list.innerHTML = state.friends.map((friend) => `
-      <button type="button" class="chat-friend${String(friend.id) === state.selectedFriendId ? " selected" : ""}" data-chat-friend="${escapeHtml(friend.id)}">
+      <div class="chat-friend${String(friend.id) === state.selectedFriendId ? " selected" : ""}">
         <span class="chat-message-avatar" aria-hidden="true">${escapeHtml(friend.avatar || "🧑‍🎓")}</span>
-        <span><strong>${escapeHtml(friend.name || "Learner")}</strong><small>${escapeHtml(friend.description || "Available to chat")}</small></span>
-      </button>
+        <button type="button" class="chat-friend-select" data-chat-friend="${escapeHtml(friend.id)}">
+          <strong>${escapeHtml(friend.name || "Learner")}</strong>
+          <small>${escapeHtml(friend.description || "Available to chat")}</small>
+        </button>
+        <button type="button" class="chat-contact-delete" data-chat-remove="${escapeHtml(friend.id)}" aria-label="Delete ${escapeHtml(friend.name || "contact")}" title="Delete contact">×</button>
+      </div>
     `).join("");
   }
 
@@ -356,6 +401,21 @@
         const selected = document.querySelector("[data-chat-selected]");
         if (selected) selected.textContent = `Chatting with ${profile?.name || "friend"}`;
         renderFriends();
+      }
+
+      const removeContact = event.target.closest("[data-chat-remove]");
+      if (removeContact) {
+        const contactId = String(removeContact.dataset.chatRemove);
+        state.deletedContactIds.add(contactId);
+        saveDeletedContacts();
+
+        if (state.selectedFriendId === contactId) {
+          state.selectedFriendId = "";
+        }
+
+        updateOnlineCount();
+        showMessage("Contact deleted from this room.");
+        return;
       }
 
       if (event.target.closest("[data-chat-copy-code]")) {

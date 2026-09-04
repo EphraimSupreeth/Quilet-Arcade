@@ -85,6 +85,35 @@
   background: var(--accent-soft);
 }
 
+.chat-friend-select {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.chat-contact-delete {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.chat-contact-delete:hover {
+  border-color: var(--error);
+  color: var(--error);
+}
+
 .chat-friend .chat-message-avatar {
   width: 32px;
   height: 32px;
