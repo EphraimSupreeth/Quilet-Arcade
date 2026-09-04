@@ -565,15 +565,6 @@
         />
       </label>
 
-      <label class="join-consent">
-        <input
-          id="joinExternalConsent"
-          name="joinConsent"
-          type="checkbox"
-          disabled
-        />
-        <span>I agree to join this live quiz session.</span>
-      </label>
     `;
 
     const helper = form.querySelector(".muted-text");
@@ -606,9 +597,6 @@
     const nickname = disclosure.querySelector(
       "#joinParticipantName"
     );
-    const consent = disclosure.querySelector(
-      "#joinExternalConsent"
-    );
 
     disclosure.hidden = !visible;
     disclosure.setAttribute("aria-hidden", String(!visible));
@@ -620,11 +608,6 @@
       if (!visible) nickname.value = "";
     }
 
-    if (consent) {
-      consent.disabled = !visible;
-
-      if (!visible) consent.checked = false;
-    }
   }
 
   function migrateLocalQuizOwnership() {

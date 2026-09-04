@@ -954,12 +954,15 @@ function renderHostLobby() {
           </div>
         </div>
       </div>
+
+      <div class="form-actions" style="margin-top:18px">
+        <button type="button" class="primary-btn" data-start-live-game>
+          Start quiz
+        </button>
+      </div>
     </section>
 
     <div class="form-actions" style="margin-top:18px">
-      <button type="button" class="primary-btn" data-start-live-game>
-        Start game
-      </button>
       <button type="button" class="secondary-btn" data-exit-game>
         Exit lobby
       </button>
@@ -975,6 +978,11 @@ function renderPlay() {
   clearInterval(play.timer);
 
   if (play.mode === "host" && !play.lobbyStarted) {
+    renderHostLobby();
+    return;
+  }
+
+  if (play.mode === "host") {
     renderHostLobby();
     return;
   }
@@ -1712,6 +1720,14 @@ $("#logoutBtn")?.addEventListener("click", (event) => {
 
   $("#librarySearch")?.addEventListener("input", (event) => {
     state.libraryQuery = event.target.value;
+    renderLibrary();
+  });
+
+  $("#workspaceSearch")?.addEventListener("input", (event) => {
+    state.libraryQuery = event.target.value;
+    setView("library");
+    const librarySearch = $("#librarySearch");
+    if (librarySearch) librarySearch.value = state.libraryQuery;
     renderLibrary();
   });
 

@@ -517,6 +517,17 @@
             </button>
           `}
         </div>
+        <div class="copy-block" style="margin-top:18px">
+          <strong class="session-code">${escapeHtml(session.code)}</strong>
+          <button type="button" class="secondary-btn" data-copy-live-code="${escapeHtml(session.code)}">
+            Copy code
+          </button>
+        </div>
+        <div class="form-actions" style="margin-top:18px">
+          <button type="button" class="primary-btn" data-start-live-game>
+            Start quiz
+          </button>
+        </div>
       `;
     } catch (error) {
       console.error("Host dashboard failed:", error);
