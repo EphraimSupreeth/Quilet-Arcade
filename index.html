@@ -608,7 +608,61 @@
         </div>
       </section>
 
-     <section id="settingsView" class="view">
+
+      <section id="settingsView" class="view">
+  <div class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Preferences</p>
+        <h2>Account & App Settings</h2>
+        <p class="muted-text">Customize your game preferences, appearance, and security.</p>
+      </div>
+    </div>
+
+    <form id="settingsForm">
+      <!-- Appearance Section -->
+      <fieldset class="settings-section">
+        <legend>Appearance</legend>
+        <label for="themeSelect">
+          Theme
+          <select id="themeSelect">
+            <option value="system">System default</option>
+            <option value="sunset">Sunset</option>
+            <option value="ocean">Ocean</option>
+            <option value="rainbow">Rainbow</option>
+            <option value="candy">Candy</option>
+            <option value="forest">Forest</option>
+            <option value="galaxy">Galaxy</option>
+            <option value="night">Night mode</option>
+            <option value="kids">Kids soft</option>
+          </select>
+        </label>
+        
+        <label class="checkbox-field">
+          <input type="checkbox" id="compactLayoutToggle" />
+          <span>Compact layout</span>
+        </label>
+      </fieldset>
+
+      <!-- Security Section (Single Reset Password Button) -->
+      <fieldset class="settings-section">
+        <legend>Security & Password</legend>
+        <p class="muted-text">Update your account password securely.</p>
+        <div class="form-actions" style="margin-top: 12px;">
+          <button type="button" id="resetPasswordBtn" class="secondary-btn">
+            Reset Password
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- Preferences Actions -->
+      <div class="form-actions" style="margin-top: 20px;">
+        <button type="submit" class="primary-btn">Save preferences</button>
+        <button type="button" id="resetSettingsBtn" class="secondary-btn">Reset to defaults</button>
+      </div>
+    </form>
+  </div>
+</section>
   <div class="panel">
     <div class="panel-head">
       <div>

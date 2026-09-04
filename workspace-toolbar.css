@@ -167,3 +167,36 @@ body.auth-mode #settingsView,
     min-width: 0 !important;
   }
 }
+/* Ensure Settings Panel is ONLY visible when active */
+#settingsView:not(.active) {
+  display: none !important;
+}
+
+/* Hide Player Name and Bio fields inside Settings */
+#settingsForm label[for*="name"],
+#settingsForm label[for*="Name"],
+#settingsForm label[for*="bio"],
+#settingsForm label[for*="Bio"],
+#settingsForm #profileBioInput,
+#settingsForm .profile-bio-field {
+  display: none !important;
+}
+
+/* Mobile Responsiveness for Settings and Forms */
+@media (max-width: 680px) {
+  #settingsForm .settings-grid,
+  #settingsForm .field-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  #settingsForm .form-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  #settingsForm .form-actions button {
+    width: 100% !important;
+    white-space: nowrap !important;
+  }
+}
