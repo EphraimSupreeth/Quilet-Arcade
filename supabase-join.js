@@ -11,7 +11,8 @@
     joining: false,
     answeredQuestion: null,
     initialized: false,
-    updateQueued: false
+    updateQueued: false,
+    hostModalOpen: false
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -222,37 +223,75 @@
       startButton.disabled = false;
     }
 
-    let panel = $("#liveSharePanel");
+  }
 
-    if (!panel) {
-      panel = document.createElement("section");
-      panel.id = "liveSharePanel";
-      panel.className = "quilet-live-share";
+  function renderHostLeaderboardModal(session, members = []) {
+    let modal = $("#liveHostLeaderboardModal");
 
-      $("#playContent .session-info")?.insertAdjacentElement(
-        "afterend",
-        panel
-      );
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "liveHostLeaderboardModal";
+      modal.className = "live-host-modal hidden";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.innerHTML = `<section class="live-host-modal-panel"></section>`;
+      document.body.appendChild(modal);
     }
 
-    const link = getJoinLink(code);
+    const panel = modal.querySelector(".live-host-modal-panel");
+    const questions = session.quiz_data?.questions || [];
+    const finished = ["finished", "closed"].includes(session.status);
+    const link = getJoinLink(session.code);
 
     panel.innerHTML = `
-      <strong>Invite players from anywhere</strong>
-      <a href="${escapeHtml(link)}" target="_blank" rel="noopener">
-        ${escapeHtml(link)}
-      </a>
-      <div class="quilet-live-actions">
-        <button type="button" class="secondary-btn"
-          data-copy-live-code="${escapeHtml(code)}">
-          Copy code
-        </button>
-        <button type="button" class="secondary-btn"
-          data-copy-live-link="${escapeHtml(link)}">
-          Copy link
-        </button>
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Host leaderboard</p>
+          <h2>${escapeHtml(session.title)}</h2>
+          <p class="muted-text">${finished ? "Quiz summary" : "Room controls and participants"}</p>
+        </div>
+        <button type="button" class="icon-btn" data-close-host-leaderboard aria-label="Close leaderboard">✕</button>
       </div>
+      <div class="live-host-room-code">
+        <span>Room code</span>
+        <strong>${escapeHtml(session.code)}</strong>
+        <button type="button" class="secondary-btn" data-copy-live-code="${escapeHtml(session.code)}">Copy code</button>
+      </div>
+      ${finished ? `
+        <div class="live-host-summary">
+          <strong>Quiz complete</strong>
+          <span>${members.length} participant${members.length === 1 ? "" : "s"} joined</span>
+          <span>${questions.length} question${questions.length === 1 ? "" : "s"}</span>
+        </div>
+      ` : `
+        <div class="leaderboard-list">
+          ${members.length ? members.map((member, index) => `
+            <div class="leaderboard-item">
+              <span class="leaderboard-rank">${index + 1}</span>
+              <div><strong>${escapeHtml(member.display_name)}</strong><p class="muted-text">${member.correct_answers} correct</p></div>
+              <strong>${member.score} pts</strong>
+            </div>
+          `).join("") : `<div class="empty-state"><p>Waiting for participants to join.</p></div>`}
+        </div>
+        <div class="form-actions">
+          <button type="button" class="primary-btn" data-start-live-game ${session.status === "waiting" ? "" : "hidden"}>Start quiz</button>
+          <button type="button" class="secondary-btn" data-copy-live-link="${escapeHtml(link)}">Copy join link</button>
+        </div>
+      `}
     `;
+
+    modal.classList.toggle("hidden", !liveState.hostModalOpen);
+  }
+
+  function openHostLeaderboard() {
+    if (!liveState.hostSession) return;
+    liveState.hostModalOpen = true;
+    void renderHostControl();
+  }
+
+  function closeHostLeaderboard() {
+    liveState.hostModalOpen = false;
+    $("#liveHostLeaderboardModal")?.classList.add("hidden");
   }
 
   async function publishHostLobby() {
@@ -291,6 +330,7 @@
       if (result.error) throw result.error;
 
       liveState.hostSession = result.data;
+      liveState.hostModalOpen = true;
       updateHostCode(result.data.code);
       await subscribeAsHost(result.data.id);
 
@@ -448,6 +488,8 @@
         (member) => member.status === "connected"
       );
 
+      renderHostLeaderboardModal(latest, members);
+
       content.innerHTML = `
         <div class="play-head">
           <div>
@@ -522,17 +564,9 @@
             </button>
           `}
         </div>
-        <div class="copy-block" style="margin-top:18px">
-          <strong class="session-code">${escapeHtml(latest.code)}</strong>
-          <button type="button" class="secondary-btn" data-copy-live-code="${escapeHtml(latest.code)}">
-            Copy code
-          </button>
-        </div>
-        <div class="form-actions" style="margin-top:18px">
-          <button type="button" class="primary-btn" data-start-live-game>
-            Start quiz
-          </button>
-        </div>
+        <button type="button" class="secondary-btn" data-open-host-leaderboard>
+          Open leaderboard
+        </button>
       `;
     } catch (error) {
       console.error("Host dashboard failed:", error);
@@ -569,6 +603,7 @@
       if (result.error) throw result.error;
 
       liveState.hostSession = result.data;
+      liveState.hostModalOpen = true;
       await renderHostControl();
 
       if (finished) {
@@ -684,12 +719,19 @@
     }
 
     if (session.status === "finished" || !question) {
+      const correctAnswers = Number(liveState.member?.correct_answers || 0);
+      const totalQuestions = questions.length;
+
       content.innerHTML = `
         <div class="result-box">
           <p class="eyebrow">Live quiz complete</p>
           <h2>${escapeHtml(session.title)}</h2>
-          <h3>${Number(liveState.member?.score || 0)} points</h3>
-          <p>Thanks for playing.</p>
+          <div class="live-result-summary">
+            <div><strong>${Number(liveState.member?.score || 0)}</strong><span>Points</span></div>
+            <div><strong>${correctAnswers}/${totalQuestions}</strong><span>Correct</span></div>
+            <div><strong>${totalQuestions}</strong><span>Questions</span></div>
+          </div>
+          <p>Nice work. Your live quiz result is complete.</p>
           <button type="button" class="primary-btn" data-leave-live>
             Back to library
           </button>
@@ -845,6 +887,113 @@
         gap: 10px;
       }
 
+      .live-host-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 14000;
+        display: grid;
+        padding: 16px;
+        place-items: center;
+        background: rgba(15, 23, 42, 0.68);
+        backdrop-filter: blur(8px);
+      }
+
+      .live-host-modal.hidden {
+        display: none !important;
+      }
+
+      .live-host-modal-panel {
+        width: min(100%, 620px);
+        max-height: calc(100dvh - 32px);
+        padding: 24px;
+        overflow: auto;
+        border: 1px solid var(--border, #dbe3ef);
+        border-radius: 24px;
+        background: var(--panel, #fff);
+        color: var(--text, #172033);
+        box-shadow: 0 28px 70px rgba(15, 23, 42, 0.3);
+      }
+
+      .live-host-room-code {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        padding: 14px;
+        border: 1px solid var(--border, #dbe3ef);
+        border-radius: 14px;
+        background: var(--panel-soft, #f8fafc);
+      }
+
+      .live-host-room-code span {
+        color: var(--muted, #64748b);
+        font-size: .8rem;
+        font-weight: 800;
+      }
+
+      .live-host-room-code strong {
+        margin-right: auto;
+        color: var(--accent, #2563eb);
+        font-size: 1.35rem;
+        letter-spacing: .12em;
+      }
+
+      .live-host-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 18px 0;
+      }
+
+      .live-host-summary span,
+      .live-host-summary strong {
+        display: block;
+      }
+
+      .live-host-summary > * {
+        padding: 14px;
+        border-radius: 14px;
+        background: var(--panel-soft, #f8fafc);
+        text-align: center;
+      }
+
+      .live-result-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .live-result-summary div {
+        padding: 14px;
+        border-radius: 14px;
+        background: var(--panel-soft, #f8fafc);
+        text-align: center;
+      }
+
+      .live-result-summary strong,
+      .live-result-summary span {
+        display: block;
+      }
+
+      .live-result-summary span {
+        color: var(--muted, #64748b);
+        font-size: .78rem;
+      }
+
+      @media (max-width: 560px) {
+        .live-host-modal-panel {
+          padding: 18px;
+          border-radius: 20px;
+        }
+
+        .live-host-summary,
+        .live-result-summary {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .quilet-waiting-pulse {
         margin: 18px 0;
         color: #16a34a;
@@ -885,6 +1034,18 @@
     }, true);
 
     document.addEventListener("click", (event) => {
+      if (event.target.closest("[data-open-host-leaderboard]")) {
+        event.preventDefault();
+        openHostLeaderboard();
+        return;
+      }
+
+      if (event.target.closest("[data-close-host-leaderboard]")) {
+        event.preventDefault();
+        closeHostLeaderboard();
+        return;
+      }
+
       const copyCode = event.target.closest(
         "[data-copy-live-code], [data-copy-code]"
       );
@@ -948,6 +1109,15 @@
       if (event.target.closest("[data-leave-live]")) {
         event.preventDefault();
         leaveLiveSession();
+        return;
+      }
+
+      if (event.target.closest("[data-view]") && liveState.hostSession) {
+        window.setTimeout(() => {
+          if (liveState.hostSession && !liveState.hostModalOpen) {
+            renderHostLeaderboardModal(liveState.hostSession, []);
+          }
+        }, 0);
       }
     }, true);
   }
