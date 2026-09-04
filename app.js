@@ -1739,14 +1739,12 @@ $("#logoutBtn")?.addEventListener("click", (event) => {
   $("#libraryFilter")?.addEventListener("change", (event) => {
     state.libraryFilter = event.target.value;
     renderLibrary();
-  });
-
-  $("#notificationBtn")?.addEventListener("click", () => {
+ $("#notificationBtn")?.addEventListener("click", () => {
     const message = state.history.length
       ? `Your latest score is ${state.history[0].score}%.`
       : "No new notifications.";
     showMessage(message);
-  });
+  });  });
 
   window.matchMedia?.("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
@@ -1805,3 +1803,23 @@ if (document.readyState === "loading") {
 } else {
   init();
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const workspaceSearch = document.querySelector("#workspaceHeader .workspace-search");
+
+  if (workspaceSearch) {
+    workspaceSearch.addEventListener("click", () => {
+      // Switch to the library view
+      if (typeof setView === "function") {
+        setView("library");
+      }
+
+      // Focus the library search input
+      setTimeout(() => {
+        const libraryInput = document.querySelector("#librarySearch");
+        if (libraryInput) {
+          libraryInput.focus();
+        }
+      }, 100);
+    });
+  }
+});

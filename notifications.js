@@ -545,3 +545,100 @@
     const message = host
       ? `${title} has started. Hosted by ${host}.`
       : `${title} has started. Join now!`;
+
+    addInboxNotification("quiz-started", title, message);
+    sendBrowserNotification(title, message, `quiz-started-${title}`);
+  }
+
+  function notifyQuizAssigned(details = {}) {
+    const preferences = getPreferences();
+    if (!preferences.quizAssigned) return;
+
+    const title = String(details.title || "New quiz assigned").trim();
+    const message = String(
+      details.message || `${title} is ready to play.`
+    ).trim();
+
+    addInboxNotification("quiz-assigned", title, message);
+    sendBrowserNotification(title, message, `quiz-assigned-${title}`);
+  }
+
+  function bindEvents() {
+    document.querySelector("#notificationBtn")?.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        toggleNotificationPanel();
+      },
+      true
+    );
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest("[data-close-notifications]")) {
+        closeNotificationPanel();
+        return;
+      }
+
+      if (event.target.closest("[data-clear-notifications]")) {
+        clearInbox();
+        showMessage("Notifications cleared.");
+        return;
+      }
+
+      const panel = document.querySelector("#notificationPanel");
+      if (
+        panel &&
+        !panel.classList.contains("hidden") &&
+        !event.target.closest("#notificationPanel") &&
+        !event.target.closest("#notificationBtn")
+      ) {
+        closeNotificationPanel();
+      }
+    });
+
+    document.querySelector("#settingsForm")?.addEventListener(
+      "submit",
+      () => {
+        savePreferences();
+        loadPreferences();
+      },
+      true
+    );
+
+    document.querySelector("#enableNotificationsBtn")?.addEventListener(
+      "click",
+      () => void requestPermission()
+    );
+
+    window.addEventListener("storage", (event) => {
+      if (
+        event.key === INBOX_STORAGE_KEY ||
+        event.key === STORAGE_KEY ||
+        event.key === "quiletUser"
+      ) {
+        loadPreferences();
+      }
+    });
+  }
+
+  function initialize() {
+    addNotificationStyles();
+    createNotificationPanel();
+    bindEvents();
+    loadPreferences();
+
+    window.QuiletNotifications = {
+      add: addInboxNotification,
+      quizStarted: notifyQuizStarted,
+      quizAssigned: notifyQuizAssigned,
+      refresh: loadPreferences
+    };
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize, { once: true });
+  } else {
+    initialize();
+  }
+})();

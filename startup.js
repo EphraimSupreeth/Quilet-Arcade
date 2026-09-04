@@ -130,6 +130,7 @@
       "quiz-editing.js",
       "analytics.js",
       "dark-mode.js",
+      "notifications.js",
       "quiz-catalog.js",
       "game-modes.js",
       "avatar-profile.js",

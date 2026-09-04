@@ -7,6 +7,7 @@ const APP_SHELL = [
   "./modern-layout.css",
   "./mobile-friendly.css",
   "./theme-fix.css",
+  "./theme-backgrounds.css",
   "./draw-guess.css",
   "./chat.js",
   "./chat.css",
