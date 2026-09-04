@@ -93,6 +93,11 @@
     if (!messages) return;
 
     if (
+      message.userId !== state.currentUserId &&
+      String(message.userId) !== state.selectedFriendId
+    ) return;
+
+    if (
       message.recipientId &&
       message.recipientId !== state.currentUserId &&
       message.userId !== state.currentUserId
@@ -195,6 +200,18 @@
     state.friends = Object.values(online)
       .flat()
       .filter((friend) => String(friend.id) !== state.currentUserId);
+
+    if (state.friends.length && !state.selectedFriendId) {
+      state.selectedFriendId = String(state.friends[0].id);
+    }
+
+    if (
+      state.selectedFriendId &&
+      !state.friends.some((friend) => String(friend.id) === state.selectedFriendId)
+    ) {
+      state.selectedFriendId = "";
+    }
+
     renderFriends();
   }
 
@@ -237,7 +254,7 @@
         </div>
         <div class="chat-layout">
           <aside class="chat-friends">
-            <h3>Friends online</h3>
+            <h3>Invited friends in this room</h3>
             <div data-chat-friends></div>
             <form class="chat-join-form" data-chat-join-form>
               <label for="chatRoomCode">Join another room</label>
@@ -268,6 +285,11 @@
 
     if (!text || !user) return;
 
+    if (!state.selectedFriendId) {
+      showMessage("Share this room code and wait for your friend to join.");
+      return;
+    }
+
     try {
       if (!await connect()) {
         showMessage("Sign in to join the community chat.");
@@ -290,7 +312,12 @@
         throw new Error(`Message delivery failed: ${result.status}`);
       }
 
-      addMessage({ userId: state.currentUserId, name: user.name, text });
+      addMessage({
+        userId: state.currentUserId,
+        name: user.name,
+        text,
+        recipientId: state.selectedFriendId
+      });
       input.value = "";
     } catch (error) {
       console.error("Community chat failed:", error);

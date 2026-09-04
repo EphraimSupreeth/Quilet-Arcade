@@ -1730,13 +1730,6 @@ $("#logoutBtn")?.addEventListener("click", (event) => {
     renderLibrary();
   });
 
-  $("#workspaceSearch")?.addEventListener("input", (event) => {
-    state.libraryQuery = event.target.value;
-    setView("library");
-    const librarySearch = $("#librarySearch");
-    if (librarySearch) librarySearch.value = state.libraryQuery;
-    renderLibrary();
-  });
 
   $("#librarySort")?.addEventListener("change", (event) => {
     state.librarySort = event.target.value;
