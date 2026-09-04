@@ -78,6 +78,12 @@
         <div><p class="eyebrow">Daily challenge</p><h3>${data.challenge ? escapeHtml(data.challenge.title) : "Create your first quiz"}</h3><p>${data.challenge ? `${data.challenge.questions.length} questions • Earn bonus XP` : "Your first quiz becomes tomorrow's challenge."}</p></div>
         ${data.challenge ? `<button type="button" class="primary-btn" data-play-quiz="${escapeHtml(data.challenge.id)}">Play now</button>` : `<button type="button" class="primary-btn" data-view="create">Create quiz</button>`}
       </div>
+      <div class="arcade-missions">
+        <div><p class="eyebrow">Weekly missions</p><h3>Build your streak</h3></div>
+        <div class="arcade-mission"><span>🎯</span><strong>${Math.min(data.history.length, 5)}/5 quizzes played</strong><small>${data.history.length >= 5 ? "Complete" : "Keep going"}</small></div>
+        <div class="arcade-mission"><span>🧠</span><strong>${Math.min(data.quizzes.length, 3)}/3 quizzes created</strong><small>${data.quizzes.length >= 3 ? "Complete" : "In progress"}</small></div>
+        <button type="button" class="secondary-btn" data-random-quiz>Random quiz</button>
+      </div>
     `;
 
     const stats = home.querySelector(".stats-grid");
@@ -94,6 +100,14 @@
     document.addEventListener("click", (event) => {
       if (event.target.closest('[data-view="home"]')) {
         window.setTimeout(refresh, 0);
+      }
+
+      if (event.target.closest("[data-random-quiz]")) {
+        const quizzes = getData().quizzes;
+        const quiz = quizzes[Math.floor(Math.random() * quizzes.length)];
+        if (quiz) {
+          document.querySelector(`[data-play-quiz="${CSS.escape(String(quiz.id))}"]`)?.click();
+        }
       }
     });
     window.addEventListener("storage", refresh);
